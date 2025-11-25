@@ -8,18 +8,6 @@ const Home = () => {
 
       <Text style={styles.title}> Stilista </Text>
 
-      <Link href="/closet" style={styles.link} >
-        <Text> Closet </Text>
-      </Link>
-
-      <Link href="/create" style={styles.link} >
-        <Text> Create </Text>
-      </Link>
-
-      <Link href="/outfits" style={styles.link} >
-        <Text> Outfits </Text>
-      </Link>
-
     </View>
   )
 }
