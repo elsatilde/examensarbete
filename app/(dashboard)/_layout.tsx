@@ -12,7 +12,7 @@ export default function DashboardLayout() {
     >
         <Tabs.Screen 
             name="closet" 
-            options={{ title: '', tabBarIcon: ({ focused }) => (
+            options={{ title: 'Closet', tabBarIcon: ({ focused }) => (
                 <Ionicons
                     size={24}
                     name={focused ? 'shirt' : 'shirt-outline'}
@@ -21,7 +21,7 @@ export default function DashboardLayout() {
         />
         <Tabs.Screen 
             name="create" 
-            options={{ title: '', tabBarIcon: ({ focused }) => (
+            options={{ title: 'Create', tabBarIcon: ({ focused }) => (
                 <Ionicons
                     size={24}
                     name={focused ? 'add-circle' : 'add-circle-outline'}
@@ -30,12 +30,16 @@ export default function DashboardLayout() {
         />
          <Tabs.Screen 
             name="outfits" 
-            options={{ title: '', tabBarIcon: ({ focused }) => (
+            options={{ title: 'Outfits', tabBarIcon: ({ focused }) => (
                 <Ionicons
                     size={24}
                     name={focused ? 'heart' : 'heart-outline'}
                 />
             ) }} 
+        />
+        <Tabs.Screen
+            name="index"
+            options={{ href: null, title: ''}}
         />
     </Tabs>
  
