@@ -1,12 +1,12 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import ThemedView from '../../components/ThemedView'
 
 const Closet = () => {
   return (
-    <View style={styles.container}>
+    <ThemedView style={styles.container} safe={true}>
         <Text style={styles.title}> Here you have your items </Text>
-
-    </View>
+    </ThemedView>
   )
 }
 
