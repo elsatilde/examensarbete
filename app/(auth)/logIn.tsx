@@ -1,24 +1,34 @@
 import { Link } from 'expo-router'
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react'
+import { StyleSheet, Text } from 'react-native'
+import ThemedView from '../../components/ThemedView'
+import ThemedTextInput from '../../components/ThemedTextInput'
 
-const LogIn = () => {
+export default function Login() {
+    const [email, setEmail] = useState()
+
   return (
-    <View style={styles.container}>
+    <ThemedView style={styles.container}>
          <Text style={styles.title}>
             Log In 
         </Text>
+
+        <ThemedTextInput 
+            style={{ width: '60%', marginBottom: 20 }}
+            placeholder='Email'
+            keyboardType="email-address"
+        />
+
         <Link href="/register" replace>
             <Text style={{ textAlign: "center" }}>
                 Don't have an account? Register here 
             </Text>
         </Link>    
-    </View>
+    </ThemedView>
    
   )
 }
 
-export default LogIn
 
 const styles = StyleSheet.create({
     container: {
