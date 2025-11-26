@@ -1,24 +1,26 @@
 import { Link } from 'expo-router'
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
+import ThemedView from '../../components/ThemedView'
 
-const Register = () => {
+export default function Register() {
   return (
-    <View style={styles.container}>
+    <ThemedView style={styles.container}>
+
         <Text style={styles.title}> 
             Register an account
         </Text>
+
         <Link href="/login" replace>
             <Text style={{ textAlign: "center" }}>
                 Already have an account? Log In here
             </Text>
         </Link>
-    </View>
+
+    </ThemedView>
    
   )
 }
-
-export default Register
 
 const styles = StyleSheet.create({
     container: {
