@@ -11,7 +11,7 @@ const Home = () => {
       <Text style={styles.title}> Stilista </Text>
 
       <Link href="/login" style={styles.link}>
-        <Text> LogIn Page </Text>
+        <Text> Login Page </Text>
       </Link>
 
       <Link href="/register" style={styles.link}>
