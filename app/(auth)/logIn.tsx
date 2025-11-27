@@ -6,6 +6,7 @@ import ThemedTextInput from '../../components/ThemedTextInput'
 import ThemedButton from '../../components/ThemedButton'
 import { colors } from '../../variables/colors'
 import { useUser } from '../../hooks/useUser'
+import { getFirebaseErrorMessage } from '../../utils/firebaseErrors'
 
 export default function Login() {
     const [email, setEmail] = useState('')
@@ -22,7 +23,8 @@ export default function Login() {
             console.log("Login successful!");
             router.replace('/(dashboard)');
         } catch (err: any) {
-            setError(err.message || 'Something went wrong when trying to login');
+            const msg = err.code ? getFirebaseErrorMessage(err.code) : err.message;
+            setError(msg);
         }
     }
 
