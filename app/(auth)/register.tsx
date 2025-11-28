@@ -1,17 +1,31 @@
-import { Link } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
 import React, { useState } from 'react'
 import { Keyboard, StyleSheet, Text, TouchableWithoutFeedback } from 'react-native'
 import ThemedView from '../../components/ThemedView'
 import ThemedTextInput from '../../components/ThemedTextInput'
 import ThemedButton from '../../components/ThemedButton'
 import { colors } from '../../variables/colors'
+import { useUser } from '../../hooks/useUser'
+import { getFirebaseErrorMessage } from '../../utils/firebaseErrors'
 
 export default function Register() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState<string | null>(null);
 
-    const handleSubmit = () => {
-        console.log('Login form submitted')
+    const { register, loading } = useUser();
+    const router = useRouter();
+
+    const handleSubmit = async () => {
+        setError(null);
+        try {
+            await register(email, password);
+            console.log('Registration successful!');
+            router.replace('/(dashboard)'); 
+          } catch (err: any) {
+            const msg = err.code ? getFirebaseErrorMessage(err.code) : err.message;
+            setError(msg);
+          }
     }
 
   return (
@@ -37,16 +51,23 @@ export default function Register() {
                 secureTextEntry
             />
 
-            <Link href="/login" replace>
-                <Text style={{ textAlign: "center" }}>
-                    Already have an account? Log In here
+            <Link href="/(auth)/login" replace>
+                <Text style={{ textAlign: "center", textDecorationLine: "underline" }}>
+                    Already have an account? Login here
                 </Text>
             </Link>
 
-            <ThemedButton onPress={handleSubmit} style={{ backgroundColor: colors.iconColor}}>
-                <Text style={{ color: colors.background }}> Register </Text>
-            </ThemedButton>  
+            {error && <Text style={{ color: 'red', marginBottom: 10 }}>{error}</Text>}
 
+            <ThemedButton 
+                onPress={handleSubmit} 
+                style={{ backgroundColor: colors.iconColor}}
+                disabled={loading}
+                >
+                <Text style={{ color: colors.background }}> 
+                    {loading ? "Loading..." : "Register"}
+                </Text>
+            </ThemedButton>  
         </ThemedView>
     </TouchableWithoutFeedback>
    
