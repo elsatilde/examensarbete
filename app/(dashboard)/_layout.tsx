@@ -3,19 +3,29 @@ import { Tabs, useRouter, useSegments } from "expo-router"
 import { colors } from "../../variables/colors"
 import { TouchableOpacity, View, StyleSheet, Text } from "react-native";
 import ThemedView from "../../components/ThemedView";
+import { useUser } from "../../hooks/useUser";
+import { useFonts } from "expo-font";
 
 export default function DashboardLayout() {
     const router = useRouter();
     const segments = useSegments();
+    const { logout } = useUser();
 
-    const onLogout = () => {
-       router.replace("/(auth)/login")
+    const onLogout = async () => {
+        await logout();
+        router.replace("/(auth)/login");
     }
 
-    const isHome = segments.length > 0 && segments[0] === "index";
+    const isHome = segments[segments.length - 1] === "(dashboard)";
+
+    const [fontsLoaded] = useFonts({
+        StilistaFont: require("../../variables/fonts/Karina.ttf"), 
+      });
+      if (!fontsLoaded) return null; 
+
 
   return (
-    <View style={{ flex: 1 }}>
+    <ThemedView style={{ flex: 1 }}>
         <View style={styles.header}>
             <TouchableOpacity onPress={() => router.push("/(dashboard)")}>
                 <Text style={styles.logo}>Stilista</Text>
@@ -24,10 +34,10 @@ export default function DashboardLayout() {
             {isHome && (
                 <TouchableOpacity onPress={onLogout}>
                     <Ionicons 
-                        name="log-out-outline" 
-                        size={24} 
+                        name={"log-out-outline"} 
+                        size={30} 
                         color={colors.iconColor}
-                    />  {/* Funkar inte riktigt */}
+                    />  
                 </TouchableOpacity>
             )}
 
@@ -75,7 +85,7 @@ export default function DashboardLayout() {
                 options={{ href: null, title: ''}}
             />
         </Tabs>
-    </View>
+    </ThemedView>
  
   )
 }
@@ -85,14 +95,15 @@ const styles = StyleSheet.create({
       height: 70,
       paddingHorizontal: 20,
       paddingTop: 25,
-      marginTop: 25,
+      marginTop: 45,
+      marginLeft: 10,
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
       backgroundColor: colors.background ,
     },
     logo: {
-      fontSize: 24,
-      fontWeight: "600",
+      fontSize: 40,
+      fontFamily: "StilistaFont"
     },
   });
