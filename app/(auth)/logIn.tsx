@@ -52,7 +52,7 @@ export default function Login() {
             />
 
             <Link href="/(auth)/register" replace>
-                <Text style={{ textAlign: "center" }}>
+                <Text style={{ textAlign: "center", textDecorationLine: "underline" }}>
                     Don't have an account? Register here 
                 </Text>
             </Link>  
