@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons"
 import { Tabs, useRouter, useSegments } from "expo-router"
 import { colors } from "../../variables/colors"
-import { TouchableOpacity, View, StyleSheet, Text } from "react-native";
+import { TouchableOpacity, View, StyleSheet, Text, Alert } from "react-native";
 import ThemedView from "../../components/ThemedView";
 import { useUser } from "../../hooks/useUser";
 import { useFonts } from "expo-font";
@@ -12,9 +12,17 @@ export default function DashboardLayout() {
     const { logout } = useUser();
 
     const onLogout = async () => {
-        await logout();
-        router.replace("/(auth)/login");
-    }
+        Alert.alert(
+            "Log out",
+            "Are you sure you want to logout?",
+            [{ text: "Cancel" }, { text: "Log out", onPress: async () => {
+                await logout();
+                router.replace("/(auth)/login");
+                console.log("Logout successful!");
+            },},],
+            { cancelable: true }
+        );
+    };
 
     const isHome = segments[segments.length - 1] === "(dashboard)";
 
@@ -32,11 +40,11 @@ export default function DashboardLayout() {
             </TouchableOpacity>
 
             {isHome && (
-                <TouchableOpacity onPress={onLogout}>
+                <TouchableOpacity onPress={onLogout} >
                     <Ionicons 
                         name={"log-out-outline"} 
                         size={30} 
-                        color={colors.iconColor}
+                        color={colors.accent}
                     />  
                 </TouchableOpacity>
             )}
@@ -104,6 +112,7 @@ const styles = StyleSheet.create({
     },
     logo: {
       fontSize: 40,
-      fontFamily: "StilistaFont"
+      fontFamily: "StilistaFont",
+      color: colors.accent
     },
   });
