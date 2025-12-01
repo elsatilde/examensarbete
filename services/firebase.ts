@@ -3,6 +3,7 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
+
 const firebaseConfig = {
   apiKey: "AIzaSyDRLyoJQrLs9rpDiAsJYLGB4o5DwJd2oa4",
   authDomain: "examensarbete-tilde.firebaseapp.com",
@@ -19,3 +20,5 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 
 export const storage = getStorage(app);
+
+export default app;
