@@ -24,7 +24,10 @@ export default function DashboardLayout() {
         );
     };
 
-    const isHome = segments[segments.length - 1] === "(dashboard)";
+    const lastSegment = segments.at(-1);
+    const isHome = segments.length === 1;
+    const isClosetPage = lastSegment === "closet";
+
 
     const [fontsLoaded] = useFonts({
         StilistaFont: require("../../variables/fonts/Karina.ttf"), 
@@ -40,12 +43,26 @@ export default function DashboardLayout() {
             </TouchableOpacity>
 
             {isHome && (
-                <TouchableOpacity onPress={onLogout} >
+                <TouchableOpacity onPress={onLogout}>
                     <Ionicons 
                         name={"log-out-outline"} 
                         size={30} 
                         color={colors.accent}
                     />  
+                </TouchableOpacity>
+            )}
+
+            {isClosetPage && (
+                <TouchableOpacity 
+                    onPress={() => router.push("/(dashboard)/add-garment")} 
+                    style={{ flexDirection: 'row', alignItems: 'center'}}
+                >
+                    <Ionicons 
+                        name={"add-outline"} 
+                        size={25} 
+                        color={colors.text} 
+                    /> 
+                    <Text style={styles.text}> Add garment </Text>
                 </TouchableOpacity>
             )}
 
@@ -92,6 +109,10 @@ export default function DashboardLayout() {
                 name="index"
                 options={{ href: null, title: ''}}
             />
+            <Tabs.Screen
+                name="add-garment"
+                options={{ href: null, title: ''}}
+            />
         </Tabs>
     </ThemedView>
  
@@ -115,4 +136,9 @@ const styles = StyleSheet.create({
       fontFamily: "StilistaFont",
       color: colors.accent
     },
+    text: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        color: colors.text
+    }
   });

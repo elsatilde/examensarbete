@@ -7,20 +7,33 @@ import ThemedButton from '../../components/ThemedButton'
 import { colors } from '../../variables/colors'
 import { useUser } from '../../hooks/useUser'
 import { getFirebaseErrorMessage } from '../../utils/firebaseErrors'
+import { RegisterCredentials } from '../../types/Auth.types'
 
 export default function Register() {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [form, setForm] = useState<RegisterCredentials>({
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
     const [error, setError] = useState<string | null>(null);
 
     const { register, loading } = useUser();
     const router = useRouter();
 
+    const handleChange = (key: keyof RegisterCredentials, value: string) => {
+      setForm({...form, [key]: value});
+    };
+
     const handleSubmit = async () => {
         setError(null);
+
+        if (form.password !== form.confirmPassword) {
+          setError("Passwords do not match");
+          return;
+        }
+
         try {
-            await register(email, password);
-            console.log('Registration successful!');
+            await register(form.email, form.password);
             router.replace('/(dashboard)'); 
           } catch (err: any) {
             const msg = err.code ? getFirebaseErrorMessage(err.code) : err.message;
@@ -39,15 +52,22 @@ export default function Register() {
                 style={{ width: '60%', marginBottom: 20 }}
                 placeholder='Email'
                 keyboardType="email-address"
-                onChangeText={setEmail}
-                value={email}
+                value={form.email}
+                onChangeText={(text) => handleChange("email", text)}
             />
 
             <ThemedTextInput
                 style={{ width: '60%', marginBottom: 20 }}
                 placeholder='Password'
-                onChangeText={setPassword}
-                value={password}
+                value={form.password}
+                onChangeText={(text) => handleChange("password", text)}
+                secureTextEntry
+            />
+              <ThemedTextInput
+                style={{ width: '60%', marginBottom: 20 }}
+                placeholder='Confirm Password'
+                value={form.confirmPassword}
+                onChangeText={(text) => handleChange("confirmPassword", text)}
                 secureTextEntry
             />
 

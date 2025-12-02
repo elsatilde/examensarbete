@@ -7,19 +7,26 @@ import ThemedButton from '../../components/ThemedButton'
 import { colors } from '../../variables/colors'
 import { useUser } from '../../hooks/useUser'
 import { getFirebaseErrorMessage } from '../../utils/firebaseErrors'
+import { LoginCredentials } from '../../types/Auth.types'
 
 export default function Login() {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [form, setForm] = useState<LoginCredentials>({
+        email: "",
+        password: "",
+    })
     const [error, setError] = useState<string | null>(null);
 
     const { login, loading } = useUser();
     const router = useRouter();
 
+    const handleChange = (key: keyof LoginCredentials, value: string) => {
+        setForm({...form, [key]: value})
+    }
+
     const handleSubmit = async () => {
         setError(null);
         try {
-            await login(email, password);
+            await login(form.email, form.password);
             console.log("Login successful!");
             router.replace('/(dashboard)');
         } catch (err: any) {
@@ -39,15 +46,15 @@ export default function Login() {
                 style={{ width: '60%', marginBottom: 20 }}
                 placeholder='Email'
                 keyboardType="email-address"
-                onChangeText={setEmail}
-                value={email}
+                value={form.email}
+                onChangeText={(text) => handleChange("email", text)}
             />
 
             <ThemedTextInput 
                 style={{ width: '60%', marginBottom: 20 }}
                 placeholder='Password'
-                onChangeText={setPassword}
-                value={password}
+                value={form.password}
+                onChangeText={(text) => handleChange("password", text)}
                 secureTextEntry
             />
 
