@@ -3,10 +3,10 @@ import { useUser } from "./useUser";
 import { Garment, GarmentCategory } from "../types/Garment.types";
 import { addGarment as addGarmentService, getGarments as getGarmentsService, deleteGarment as deleteGarmentService } from "../services/garments";
 
-
 export function useGarments() {
     const { user } = useUser();
     const [loading, setLoading] = useState(false);
+    const [garments, setGarments] = useState<Garment[]>([]);
 
     const addGarments = async (category: GarmentCategory, imageUrl: string) => {
         if (!user) throw new Error ("User not logged in");
@@ -19,11 +19,13 @@ export function useGarments() {
         }
     };
 
-    const getGarments = async (): Promise<Garment[]> => {
+    const getGarments = async () => {
         if (!user) throw new Error ("User not logged in");
         setLoading(true);
         try {
-            return await getGarmentsService(user);
+            const items = await getGarmentsService(user);
+            setGarments(items);
+            return items;
         } finally {
             setLoading(false);
         }
@@ -33,12 +35,13 @@ export function useGarments() {
         if (!user) throw new Error ("User not logged in");
         setLoading(true);
         try {
-            await deleteGarmentService(user, garmentId)
+            await deleteGarmentService(user, garmentId);
+            setGarments(prev => prev.filter(g => g.id !== garmentId));
         } finally {
             setLoading(false);
         }
     };
 
-    return { addGarments, getGarments, deleteGarment, loading}
+    return { garments, addGarments, getGarments, deleteGarment, loading };
 }
 
