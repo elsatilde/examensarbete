@@ -113,6 +113,10 @@ export default function DashboardLayout() {
                 name="add-garment"
                 options={{ href: null, title: ''}}
             />
+            <Tabs.Screen
+                name="camera"
+                options={{ href: null, title: ''}}
+            />
         </Tabs>
     </ThemedView>
  

@@ -7,11 +7,7 @@ const Closet = () => {
     <ThemedView style={styles.container} safe={true}>
         <Text style={styles.title}> Top </Text>
         <ScrollView horizontal>
-        <View style={{ backgroundColor: 'pink', marginRight: 20, marginLeft: 20, width: 200, height: 200 }}></View>
-        <View style={{ backgroundColor: 'green', marginRight: 20, marginLeft: 20, width: 200, height: 200 }}></View>
-        <View style={{ backgroundColor: 'blue', marginRight: 20, marginLeft: 20, width: 200, height: 200 }}></View>
-        <View style={{ backgroundColor: 'red', marginRight: 20, marginLeft: 20, width: 200, height: 200 }}></View>
-        </ScrollView>
+       </ScrollView>
         <Text style={styles.title}> Bottom </Text>
         <ScrollView></ScrollView>
         <Text style={styles.title}> Shoes </Text>
