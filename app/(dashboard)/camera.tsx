@@ -49,18 +49,25 @@ export default function CameraScreen() {
     };
 
     return (
-        <CameraView style={{ flex: 1}} ref={cameraRef}>
-            <View style={{ position: "absolute", bottom: 50, width: "100%", alignItems: "center" }}>
-                <Pressable onPressIn={onPressIn} onPressOut={onPressOut} onPress={takePhoto}>
-                    <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
-                        <Ionicons 
-                            name={'radio-button-on'} 
-                            size={80} 
-                            color="white"
-                        />
-                    </Animated.View>
-                </Pressable>
-            </View>
-        </CameraView>
+        <View style={{ flex: 1 }}>
+        <CameraView style={{ flex: 1 }} ref={cameraRef} />
+    
+        <View style={{ 
+            position: "absolute", 
+            bottom: 50, 
+            width: "100%", 
+            alignItems: "center" 
+        }}>
+            <Pressable onPressIn={onPressIn} onPressOut={onPressOut} onPress={takePhoto}>
+                <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+                    <Ionicons 
+                        name="radio-button-on" 
+                        size={80} 
+                        color="white"
+                    />
+                </Animated.View>
+            </Pressable>
+        </View>
+    </View>
     )
 }
