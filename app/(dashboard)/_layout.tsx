@@ -117,6 +117,10 @@ export default function DashboardLayout() {
                 name="camera"
                 options={{ href: null, title: ''}}
             />
+            <Tabs.Screen
+                name="library"
+                options={{ href: null, title: ''}}
+            />
         </Tabs>
     </ThemedView>
  

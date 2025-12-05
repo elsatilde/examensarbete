@@ -45,7 +45,8 @@ function InitialView() {
 
             <Text style={styles.text_box}> or </Text> 
 
-            <TouchableOpacity style={{ flexDirection: 'column', alignItems: 'center', marginTop: 30}}> 
+            <TouchableOpacity onPress={() => router.push("/(dashboard)/library")}
+            style={{ flexDirection: 'column', alignItems: 'center', marginTop: 30}}> 
 
                 <Ionicons name={'images'} size={30} color={colors.iconColor} style={{ marginBottom: 5}} /> 
                 <Text style={styles.text_box}> Upload from library </Text> 
@@ -90,7 +91,7 @@ function PreviewView({ imageUri}: {imageUri: string}) {
     return (
         <View style={styles.box}> 
 
-            <Text style={{ paddingBottom: 15, fontWeight: '500'}}> Choose category </Text> 
+            <Text style={{ paddingBottom: 15, fontWeight: 'bold', fontSize: 15 }}> Choose category </Text> 
                 <View style={{ flexDirection: 'row', alignItems: 'center'}}> 
                     {GARMENT_CATEGORIES.map(c => ( 
                     <TouchableOpacity 
@@ -135,10 +136,13 @@ const styles = StyleSheet.create({
     },
     box: {
         backgroundColor: colors.muted,
+        marginTop: 40,
         borderRadius: 10,
-        height: 500,
+        height: 450,
         width: 300,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     text_box: {
         fontWeight: '400',
@@ -146,8 +150,8 @@ const styles = StyleSheet.create({
         fontSize: 12,  
     },
     categoryButton: {
-        paddingVertical: 10,
-        paddingHorizontal: 18,
+        paddingVertical: 5,
+        paddingHorizontal: 15,
         borderRadius: 20,
         borderWidth: 2,
         borderColor: colors.text,
@@ -159,9 +163,9 @@ const styles = StyleSheet.create({
         borderColor: colors.accent,
       },  
       previewImage: {
-        width: 180,
-        height: 180,
-        borderRadius: 10,
+        margin: 20,
+        width: 250,
+        height: 250,
     },
       primaryBtn: {
         backgroundColor: colors.accent,
