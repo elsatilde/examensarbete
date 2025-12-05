@@ -1,12 +1,20 @@
-import React, { useEffect } from 'react'
-import { StyleSheet } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import ThemedView from '../../components/ThemedView'
 import { useGarments } from '../../hooks/useGarments'
 import GarmentCarousel from '../../components/CreateCarousel'
 import { Garment } from '../../types/Garment.types'
+import { useOutfits } from '../../hooks/useOutfits'
+import { colors } from '../../variables/colors'
+import { Outfit } from '../../types/Outfit.types'
 
 const Create = () => {
   const { garments, getGarments } = useGarments();
+  const { addOutfit } = useOutfits();
+
+  const [selectedTop, setSelectedTop] = useState<string | null>(null);
+  const [selectedBottom, setSelectedBottom] = useState<string | null>(null);
+  const [selectedShoes, setSelectedShoes] = useState<string | null>(null);
 
   useEffect(() => {
     getGarments();
@@ -16,11 +24,36 @@ const Create = () => {
   const bottoms = garments.filter((g: Garment) => g.category === "bottom");
   const shoes = garments.filter((g: Garment) => g.category === "shoes");
 
+  const saveOutfit = async () => {
+    if(!selectedTop || !selectedBottom || !selectedShoes){
+      alert("Please choose three garments");
+      return;
+    }
+
+    // const newOutfit: Omit<Outfit, 'id' | 'createdAt'> = {
+    //   topId: selectedTop,
+    //   bottomId: selectedBottom,
+    //   shoesId: selectedShoes,
+    // }
+
+    // await addOutfit(newOutfit as Outfit);
+    await addOutfit(selectedTop, selectedBottom, selectedShoes);
+
+    setSelectedTop(null);
+    setSelectedBottom(null);
+    setSelectedShoes(null);
+    alert("Outfit saved!")
+  };
+
   return (
     <ThemedView style={styles.container} safe={true}>
-      <GarmentCarousel items={tops} />
-      <GarmentCarousel items={bottoms} />
-      <GarmentCarousel items={shoes} /> 
+      <GarmentCarousel items={tops} onSelect={setSelectedTop} selectedId={selectedTop} />
+      <GarmentCarousel items={bottoms} onSelect={setSelectedBottom} selectedId={selectedBottom} />
+      <GarmentCarousel items={shoes} onSelect={setSelectedShoes} selectedId={selectedShoes} /> 
+
+      <TouchableOpacity style={styles.saveBtn} onPress={saveOutfit}>
+          <Text style={styles.textBtn}> Save Outfit </Text>
+      </TouchableOpacity>
     </ThemedView>
   )
 }
@@ -36,5 +69,17 @@ const styles = StyleSheet.create({
     title: {
         fontWeight: 'bold',
         fontSize: 18
+    },
+    saveBtn: {
+        backgroundColor: colors.accent,
+        color: 'white',
+        marginTop: 10,
+        paddingHorizontal: 15,
+        paddingVertical: 12,
+        borderRadius: 10,
+    },
+    textBtn: {
+      color: 'white',
+      fontWeight: '600'
     }
 })

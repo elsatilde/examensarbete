@@ -1,19 +1,30 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { colors } from "../variables/colors";
 import { Garment } from "../types/Garment.types";
 
 type CreateCarouselProps = {
    items: Garment[];
+   onSelect: (id: string) => void;
+   selectedId: string | null;
 }
 
-export default function CreateCarousel({ items }: CreateCarouselProps) {
+export default function CreateCarousel({ items, onSelect, selectedId }: CreateCarouselProps) {
     const [index, setIndex] = useState(0);
 
     if(!items || items.length === 0) {
         return <Text style={{ textAlign: "center" }}> No items found </Text>;
     }
+
+    useEffect(() => {
+        const currentItem = items[index];
+
+        if(currentItem){
+            onSelect(currentItem.id);
+        }
+
+    }, [index, items, onSelect])
 
     const goLeft = () => {
         setIndex((prev) => (prev === 0 ? items.length - 1 : prev - 1 ));
@@ -24,6 +35,7 @@ export default function CreateCarousel({ items }: CreateCarouselProps) {
     };
 
     const current = items[index];
+    const isSelected = current.id === selectedId;
 
     return (
         <View style={styles.container}>
@@ -33,7 +45,7 @@ export default function CreateCarousel({ items }: CreateCarouselProps) {
 
             <Image
                 source={{ uri: current.imageUrl }}
-                style={styles.image}
+                style={[styles.image, isSelected && styles.selectedImage]}
                 resizeMode="contain"
             />
 
@@ -59,5 +71,11 @@ const styles = StyleSheet.create({
         width: 180,
         height: 200,
         borderRadius: 10,
+        borderWidth: 2,
+        borderColor: '' ,
     },
+    selectedImage: {
+        borderWidth: 2,
+        borderColor: colors.accent,
+    }
 });
