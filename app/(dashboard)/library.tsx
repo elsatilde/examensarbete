@@ -19,7 +19,7 @@ export default function Library() {
         }
 
         const result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            mediaTypes: ['images'],
             allowsEditing: true,
             quality: 1,
         });
@@ -47,7 +47,7 @@ export default function Library() {
                 <>
                     <Image source={{ uri: imageUri }} style={styles.image} />
                     <TouchableOpacity onPress={continueToPreview} style={styles.saveButton}>
-                        <Text style={styles.saveButtonText}> Continue </Text>
+                        <Text style={styles.buttonText}> Continue </Text>
                     </TouchableOpacity>
                 </>
             )}
@@ -57,20 +57,31 @@ export default function Library() {
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, justifyContent: "center", alignItems: "center" },
+    container: { 
+        flex: 1, 
+        justifyContent: 'center', 
+        alignItems: 'center' 
+    },
     button: {
-      padding: 14,
-      backgroundColor: colors.accent,
-      borderRadius: 8,
+        padding: 14,
+        backgroundColor: colors.accent,
+        borderRadius: 8,
     },
-    buttonText: { color: "white", fontSize: 16 },
-    image: { width: 250, height: 250, marginTop: 20, borderRadius: 10 },
+    buttonText: { 
+        color: 'white', 
+        fontSize: 16 
+    },
+    image: { 
+        width: 250, 
+        height: 250, 
+        marginTop: 20, 
+        borderRadius: 10 
+    },
     saveButton: {
-      marginTop: 20,
-      backgroundColor: "black",
-      paddingVertical: 12,
-      paddingHorizontal: 20,
-      borderRadius: 8,
+        marginTop: 20,
+        backgroundColor: 'black',
+        paddingVertical: 12,
+        paddingHorizontal: 20,
+        borderRadius: 8,
     },
-    saveButtonText: { color: "white", fontSize: 16 },
   });

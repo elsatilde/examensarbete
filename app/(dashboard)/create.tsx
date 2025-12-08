@@ -6,7 +6,7 @@ import GarmentCarousel from '../../components/CreateCarousel'
 import { Garment } from '../../types/Garment.types'
 import { useOutfits } from '../../hooks/useOutfits'
 import { colors } from '../../variables/colors'
-import { Outfit } from '../../types/Outfit.types'
+
 
 const Create = () => {
   const { garments, getGarments } = useGarments();
@@ -30,13 +30,6 @@ const Create = () => {
       return;
     }
 
-    // const newOutfit: Omit<Outfit, 'id' | 'createdAt'> = {
-    //   topId: selectedTop,
-    //   bottomId: selectedBottom,
-    //   shoesId: selectedShoes,
-    // }
-
-    // await addOutfit(newOutfit as Outfit);
     await addOutfit(selectedTop, selectedBottom, selectedShoes);
 
     setSelectedTop(null);
@@ -46,7 +39,7 @@ const Create = () => {
   };
 
   return (
-    <ThemedView style={styles.container} safe={true}>
+    <ThemedView style={styles.container} safe={true} >
       <GarmentCarousel items={tops} onSelect={setSelectedTop} selectedId={selectedTop} />
       <GarmentCarousel items={bottoms} onSelect={setSelectedBottom} selectedId={selectedBottom} />
       <GarmentCarousel items={shoes} onSelect={setSelectedShoes} selectedId={selectedShoes} /> 
@@ -63,8 +56,10 @@ export default Create
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
+        marginTop: -25,
+        paddingTop: 20,
+        justifyContent: 'space-around',
+        paddingHorizontal: 10,
     },
     title: {
         fontWeight: 'bold',
@@ -73,13 +68,15 @@ const styles = StyleSheet.create({
     saveBtn: {
         backgroundColor: colors.accent,
         color: 'white',
-        marginTop: 10,
-        paddingHorizontal: 15,
-        paddingVertical: 12,
+        marginTop: -7,
+        alignSelf: 'center',
+        paddingHorizontal: 25,
+        paddingVertical: 10,
         borderRadius: 10,
     },
     textBtn: {
       color: 'white',
-      fontWeight: '600'
+      fontWeight: '600',
+      alignSelf: 'center',
     }
 })

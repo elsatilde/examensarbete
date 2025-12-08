@@ -13,18 +13,23 @@ type CreateCarouselProps = {
 export default function CreateCarousel({ items, onSelect, selectedId }: CreateCarouselProps) {
     const [index, setIndex] = useState(0);
 
-    if(!items || items.length === 0) {
-        return <Text style={{ textAlign: "center" }}> No items found </Text>;
-    }
+    useEffect(() => {
+        if (items.length > 0 && index > items.length - 1) {
+            setIndex(0);
+        }
+    }, [items]);
 
     useEffect(() => {
         const currentItem = items[index];
-
         if(currentItem){
             onSelect(currentItem.id);
         }
 
-    }, [index, items, onSelect])
+    }, [index, items])
+
+    if(!items || items.length === 0) {
+        return <Text style={{ textAlign: "center" }}> No items found </Text>;
+    }
 
     const goLeft = () => {
         setIndex((prev) => (prev === 0 ? items.length - 1 : prev - 1 ));
@@ -38,7 +43,7 @@ export default function CreateCarousel({ items, onSelect, selectedId }: CreateCa
     const isSelected = current.id === selectedId;
 
     return (
-        <View style={styles.container}>
+        <View style={styles.container} >
             <TouchableOpacity onPress={goLeft} style={styles.arrow}>
                 <Ionicons name={'chevron-back'} size={32} color={colors.iconColor} />
             </TouchableOpacity>
@@ -58,24 +63,23 @@ export default function CreateCarousel({ items, onSelect, selectedId }: CreateCa
 
 const styles = StyleSheet.create({ 
     container: {
-        width: "100%",
-        height: 250,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between",
+        width: '100%',
+        height: 200,
+        gap: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     arrow: {
         padding: 10,
     },
     image: {
-        width: 180,
-        height: 200,
+        width: 150,
+        height: 150,
         borderRadius: 10,
         borderWidth: 2,
-        borderColor: '' ,
     },
     selectedImage: {
-        borderWidth: 2,
         borderColor: colors.accent,
     }
 });
