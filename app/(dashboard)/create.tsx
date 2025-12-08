@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import ThemedView from '../../components/ThemedView'
 import { useGarments } from '../../hooks/useGarments'
@@ -6,6 +6,7 @@ import GarmentCarousel from '../../components/CreateCarousel'
 import { Garment } from '../../types/Garment.types'
 import { useOutfits } from '../../hooks/useOutfits'
 import { colors } from '../../variables/colors'
+import { useFocusEffect } from 'expo-router'
 
 
 const Create = () => {
@@ -16,9 +17,11 @@ const Create = () => {
   const [selectedBottom, setSelectedBottom] = useState<string | null>(null);
   const [selectedShoes, setSelectedShoes] = useState<string | null>(null);
 
-  useEffect(() => {
-    getGarments();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getGarments();
+    }, [])
+  );
 
   const tops = garments.filter((g: Garment) => g.category === "top");
   const bottoms = garments.filter((g: Garment) => g.category === "bottom");

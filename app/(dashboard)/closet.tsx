@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import React, { useCallback, useEffect } from 'react'
+import { ScrollView, StyleSheet, Text } from 'react-native'
 import ThemedView from '../../components/ThemedView'
 import { useGarments } from '../../hooks/useGarments'
+import { useFocusEffect } from 'expo-router'
+import CategoryList from '../../components/CategoryList'
 
 const Closet = () => {
   const { garments, getGarments } = useGarments();
 
-  useEffect(() => {
-    getGarments();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getGarments();
+    }, [])
+  );
 
   const tops = garments.filter(g => g.category === "top");
   const bottoms = garments.filter(g => g.category === "bottom");
@@ -17,17 +21,23 @@ const Closet = () => {
   return (
     <ThemedView style={styles.container} safe={true}>
 
-        <Text style={styles.title}> Top </Text>
+        <Text style={styles.title}> Tops </Text>
           <ScrollView horizontal>
-            {/* <CategoryList items={tops} /> */}
+            {tops.map(item => (
+                <CategoryList key={item.id} item={item} />
+            ))}
           </ScrollView>
-        <Text style={styles.title}> Bottom </Text>
+        <Text style={styles.title}> Bottoms </Text>
           <ScrollView horizontal>
-            {/* <CategoryList items={bottoms} /> */}
+            {bottoms.map(item => (
+                <CategoryList key={item.id} item={item} />
+            ))}
           </ScrollView>
         <Text style={styles.title}> Shoes </Text>
           <ScrollView horizontal>
-            {/* <CategoryList items={shoes} /> */}
+            {shoes.map(item => (
+                <CategoryList key={item.id} item={item} />
+            ))}
           </ScrollView>
 
     </ThemedView>
@@ -45,6 +55,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontWeight: 'bold',
-        fontSize: 15
+        fontSize: 20,
+        marginBottom: 15,
     }
 })

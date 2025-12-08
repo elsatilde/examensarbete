@@ -1,13 +1,25 @@
-// import { Text, View } from "react-native";
+import { Image, TouchableOpacity, StyleSheet} from "react-native";
+import { Garment } from "../types/Garment.types";
 
-// export default function CategoryList({ title, items }) {
-//     return (
-//         <View style={{ marginBottom: 20}}>
-//             <Text style={{ fontSize: 18}}> 
-//                 {title} 
-//             </Text>
+export default function CategoryList({ item }: {item: Garment}) {
+    return (
+        <TouchableOpacity style={styles.box}>
+             <Image 
+                source={{ uri: item.imageUrl }} 
+                style={styles.img}
+                resizeMode="cover" />
+        </TouchableOpacity>
+    )
+}
 
-
-//         </View>
-//     )
-// }
+const styles = StyleSheet.create({
+    box: {
+        width: 120,
+        height: 140,
+        marginRight: 10,
+    },
+    img: {
+        width: '100%',
+        height: '100%',
+    }
+})
