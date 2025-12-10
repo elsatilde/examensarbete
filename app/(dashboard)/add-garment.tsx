@@ -1,9 +1,9 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import ThemedView from "../../components/ThemedView";
 import { Ionicons } from "@expo/vector-icons";
-import { useFocusEffect, useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { colors } from "../../variables/colors";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { uploadImageAsync } from "../../services/storage";
 import { getAuth } from "firebase/auth";
 import { GARMENT_CATEGORIES, GarmentCategory } from "../../types/Garment.types";
@@ -62,15 +62,6 @@ function PreviewView({ imageUri}: {imageUri: string}) {
     const { addGarments } = useGarments();
     const [loading, setLoading] = useState(false);
     const [category, setCategory] = useState<GarmentCategory | null>(null);
-
-    // useFocusEffect(
-    //     useCallback(() => {
-    //         return () => {
-    //             setCategory(null);
-    //             setLoading(false);
-    //         };
-    //     }, [])
-    // );
 
     const saveGarment = async () => {
         if (!category) { 

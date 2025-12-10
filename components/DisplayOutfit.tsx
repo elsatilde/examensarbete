@@ -3,7 +3,6 @@ import { Outfit } from "../types/Outfit.types";
 import { getGarmentById } from "../services/garments";
 import { Image, View } from "react-native";
 import { colors } from "../variables/colors";
-import { useUser } from "../hooks/useUser";
 import { Garment } from "../types/Garment.types";
 import { AppUser } from "../types/User.types";
 

@@ -1,4 +1,4 @@
-import { Slot, Stack, useRouter } from 'expo-router'
+import { Slot, useRouter } from 'expo-router'
 import { StatusBar } from "expo-status-bar"
 import React, { useEffect } from 'react'
 import { UserProvider } from '../contexts/UserContext'
@@ -9,10 +9,6 @@ export default function RootLayout() {
     <UserProvider>
       <StatusBar style="auto" />
         <AuthGate>
-          {/* <Stack>
-            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-            <Stack.Screen name="(dashboard)" options={{ headerShown: false }} />
-          </Stack> */}
           <Slot />
       </AuthGate>
     </UserProvider>
