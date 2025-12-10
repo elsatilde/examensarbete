@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, serverTimestamp } from "firebase/firestore";
 import { Garment, GarmentCategory } from "../types/Garment.types";
 import { AppUser } from "../types/User.types";
 import { db } from "./firebase";
@@ -14,7 +14,7 @@ export async function addGarment(user: AppUser, category: GarmentCategory, image
 
     return docRef.id;
 
-}
+};
 
 export async function getGarments(user: AppUser): Promise<Garment[]> {
     if (!user) throw new Error("User not logged in");
@@ -25,11 +25,22 @@ export async function getGarments(user: AppUser): Promise<Garment[]> {
         id: doc.id,
         ...(doc.data() as Omit<Garment, "id">),
     }));
-}
+};
 
 export async function deleteGarment(user: AppUser, garmentId: string) {
     if (!user) throw new Error("User not logged in");
   
     await deleteDoc(doc(db, "users", user.uid, "garments", garmentId));
-  }
+};
+
+export const getGarmentById = async (user: AppUser, garmentId: string,): Promise<Garment | null> => {
+    if (!user) throw new Error("User not logged in");
+
+    const docRef = doc(db, "users", user.uid, "garments", garmentId);
+    const snap = await getDoc(docRef);
+
+    return snap.exists() 
+        ? {id: snap.id, ...(snap.data() as Omit<Garment, "id"> )}
+        : null;
+};
   
