@@ -3,6 +3,7 @@ import { useUser } from "./useUser";
 import { Garment, GarmentCategory } from "../types/Garment.types";
 import { addGarment as addGarmentService, getGarments as getGarmentsService, deleteGarment as deleteGarmentService } from "../services/garments";
 
+
 export function useGarments() {
     const { user } = useUser();
     const [loading, setLoading] = useState(false);

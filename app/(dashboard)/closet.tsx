@@ -4,6 +4,7 @@ import ThemedView from '../../components/ThemedView'
 import { useGarments } from '../../hooks/useGarments'
 import { useFocusEffect } from 'expo-router'
 import CategoryList from '../../components/CategoryList'
+import { colors } from '../../variables/colors'
 
 const Closet = () => {
   const { garments, getGarments } = useGarments();
@@ -51,11 +52,14 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingLeft: 30,
         paddingRight: 30,
+        marginTop: -25,
        
     },
     title: {
-        fontWeight: 'bold',
         fontSize: 20,
         marginBottom: 15,
+        fontFamily: 'StilistaFont',
+        textDecorationLine: 'underline',
+        color: colors.iconColor,
     }
 })

@@ -51,7 +51,7 @@ export default function CreateCarousel({ items, onSelect, selectedId }: CreateCa
             <Image
                 source={{ uri: current.imageUrl }}
                 style={[styles.image, isSelected && styles.selectedImage]}
-                resizeMode="contain"
+                resizeMode="cover"
             />
 
             <TouchableOpacity onPress={goRight} style={styles.arrow}>

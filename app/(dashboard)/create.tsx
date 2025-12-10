@@ -38,7 +38,8 @@ const Create = () => {
     setSelectedTop(null);
     setSelectedBottom(null);
     setSelectedShoes(null);
-    alert("Outfit saved!")
+
+    alert("Outfit saved!")// Behöver snyggas till
   };
 
   return (
@@ -81,5 +82,7 @@ const styles = StyleSheet.create({
       color: 'white',
       fontWeight: '600',
       alignSelf: 'center',
+      fontFamily: 'StilistaFont',
+      fontSize: 20
     }
 })
