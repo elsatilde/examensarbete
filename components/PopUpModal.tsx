@@ -9,7 +9,7 @@ interface PopUpModalProps {
 
 export default function PopUpModal({visible, onClose, children }: PopUpModalProps) {
     return (
-        <Modal transparent visible={visible} animationType="fade" onRequestClose={onClose}>
+        <Modal transparent visible={visible} animationType='fade' onRequestClose={onClose}>
             <View style={styles.overlay}>
                 <TouchableOpacity style={styles.overlayTouchable} onPress={onClose} />
                 <View style={styles.card}>

@@ -32,7 +32,6 @@ export default function Outfits() {
   }, [user]);
 
   useEffect(() => {
-
     if (!modalVisible || !selectedOutfit || !user) return;
 
     const load = async () => {
@@ -46,38 +45,29 @@ export default function Outfits() {
 
   }, [modalVisible, selectedOutfit, user]);
 
-  const confirmDeleteOutfit = (id: string) => {
+  const handleDeleteOutfit = async (id: string) => {
     Alert.alert(
       "Delete Outfit",
       "Are you sure you want to delete this outfit?",
       [
-        { text: "Cancel", style: "cancel" },
-        { 
-          text: "Delete", 
-          style: "destructive",
-          onPress: () => handleDeleteOutfit(id)
+        {text: "Cancel", style: "cancel" },
+        {text: "Delete", style: "destructive",
+          onPress: async () => {
+            if (!user) return;
+            try {
+              await deleteOutfit(user, id);
+              setOutfits(prev  => prev.filter(o => o.id !== id));
+              setSelectedOutfit(null);
+              setModalVisible(false);
+            } catch (err) {
+              console.error(err);
+              alert("Failed to delete outfit ");
+            };
+          }
         }
       ]
-    );
-  };
-
-  const handleDeleteOutfit = async (id: string) => {
-    if (!user) return;
-
-    try {
-      await deleteOutfit(user, id)
-
-      setOutfits(prev  => prev.filter(o => o.id !== id));
-
-      setSelectedOutfit(null);
-      setModalVisible(false);
-
-    } catch (error) {
-      console.error("Failed to delete outfit:", error);
-      alert("Failed to delete outfit ")
-    }
+    )
   }
-
 
   return (
     <ThemedView style={styles.container} safe={true}>
@@ -91,7 +81,7 @@ export default function Outfits() {
                     onPress={() => {
                       setSelectedOutfit(outfit);
                       setModalVisible(true);
-                    }} // Här ska en popup vara
+                    }} 
                     >
                         <DispalyOutfit outfit={outfit} user={user} />
                 </TouchableOpacity>
@@ -103,20 +93,13 @@ export default function Outfits() {
             <View style={{ gap: 20 }}>
                 <TouchableOpacity 
                   onPress={() => setModalVisible(false)}
-                  style={{
-                    position: 'relative',
-                    top: 0,
-                    right: 0,
-                    padding: 2,
-                    zIndex: 10
-                  }}
-                >
-                  <Ionicons name={'close'} color={'burgundy'} size={32} />
+                  style={{ position: 'relative', top: 0, right: 0, padding: 2, zIndex: 10 }}>
+                  <Ionicons name={'close'} color={colors.text} size={32} />
                 </TouchableOpacity>
 
                 <DispalyOutfit outfit={selectedOutfit} user={user} />
 
-                <Text style={{ fontSize: 18, fontWeight: "bold" }}> Garments: </Text>
+                <Text style={{ fontSize: 18, fontWeight: 'bold' }}> Garments: </Text>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                   {[popupItems.top, popupItems.bottom, popupItems.shoes].map((g, i) => ( // Kanske att man ska komma till garment card när man trycker på ett plagg
                     <Image 
@@ -130,9 +113,8 @@ export default function Outfits() {
                 <TouchableOpacity
                   onPress={() => handleDeleteOutfit(selectedOutfit.id)}
                   style={{ backgroundColor: colors.accent, padding: 12, borderRadius: 10}}>
-                    <Text style={{ color: "white", textAlign: "center" }}> Delete Outfit </Text>
+                    <Text style={{ color:'white', textAlign: 'center' }}> Delete Outfit </Text>
                 </TouchableOpacity>
-
             </View>
           )}
         </PopUpModal>

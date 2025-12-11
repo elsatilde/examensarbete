@@ -1,14 +1,20 @@
 import { Image, TouchableOpacity, StyleSheet} from "react-native";
 import { Garment } from "../types/Garment.types";
 
-export default function CategoryList({ item }: {item: Garment}) {
+interface CategoryListProps {
+    item: Garment;
+    onPress: (garment: Garment) => void;
+}
+
+export default function CategoryList({ item, onPress }: CategoryListProps) {
     return (
-        // Här ska en popup vara
-        <TouchableOpacity style={styles.box} onPress={() => console.log("Clicked garment:", item.id)}>  
+        <TouchableOpacity 
+            style={styles.box} 
+            onPress={() => onPress(item)}>  
              <Image 
                 source={{ uri: item.imageUrl }} 
                 style={styles.img}
-                resizeMode="cover" />
+                resizeMode='cover' />
         </TouchableOpacity>
     )
 }
