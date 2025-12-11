@@ -6,7 +6,7 @@ import { colors } from "../variables/colors";
 import { Garment } from "../types/Garment.types";
 import { AppUser } from "../types/User.types";
 
-type OutfitItems = {
+export type OutfitItems = {
     top?: Garment | null;
     bottom?: Garment | null;
     shoes?: Garment | null;

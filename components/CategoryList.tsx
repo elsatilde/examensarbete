@@ -3,7 +3,8 @@ import { Garment } from "../types/Garment.types";
 
 export default function CategoryList({ item }: {item: Garment}) {
     return (
-        <TouchableOpacity style={styles.box} onPress={() => console.log("Clicked garment:", item.id)}>
+        // Här ska en popup vara
+        <TouchableOpacity style={styles.box} onPress={() => console.log("Clicked garment:", item.id)}>  
              <Image 
                 source={{ uri: item.imageUrl }} 
                 style={styles.img}
