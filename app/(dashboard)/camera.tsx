@@ -77,28 +77,28 @@ export default function CameraScreen() {
                 top: 20,
                 left: 20,
                 padding: 10,
-                backgroundColor: "rgba(0,0,0,0.5)",
+                backgroundColor: 'rgba(0,0,0,0.5)',
                 borderRadius: 10,
                 flexDirection: 'row',
                 alignItems: 'center',
             }}
         >
-            <Ionicons name="arrow-back" size={20} color="white" />
+            <Ionicons name={'arrow-back'} size={20} color='white' />
             <Text style={{ fontWeight: 'bold', fontSize: 15, color: 'white',}}> Back </Text>
         </TouchableOpacity>
 
         <View style={{ 
-            position: "absolute", 
+            position: 'absolute', 
             bottom: 50, 
-            width: "100%", 
-            alignItems: "center" 
+            width: '100%', 
+            alignItems: 'center' 
         }}>
             <Pressable onPressIn={onPressIn} onPressOut={onPressOut} onPress={takePhoto}>
                 <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
                     <Ionicons 
-                        name="radio-button-on" 
+                        name={'radio-button-on'}
                         size={80} 
-                        color="white"
+                        color='white'
                     />
                 </Animated.View>
             </Pressable>

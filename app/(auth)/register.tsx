@@ -72,7 +72,7 @@ export default function Register() {
             />
 
             <Link href="/(auth)/login" replace>
-                <Text style={{ textAlign: "center", textDecorationLine: "underline" }}>
+                <Text style={{ textAlign: 'center', textDecorationLine: 'underline' }}>
                     Already have an account? Login here
                 </Text>
             </Link>
@@ -97,11 +97,11 @@ export default function Register() {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: "center",
-      alignItems: "center"
+      justifyContent: 'center',
+      alignItems: 'center'
     },
     title: {
-      textAlign: "center",
+      textAlign: 'center',
       fontSize: 18,
       marginBottom: 30
     },

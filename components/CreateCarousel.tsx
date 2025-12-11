@@ -28,7 +28,7 @@ export default function CreateCarousel({ items, onSelect, selectedId }: CreateCa
     }, [index, items])
 
     if(!items || items.length === 0) {
-        return <Text style={{ textAlign: "center" }}> No items found </Text>;
+        return <Text style={{ textAlign: 'center' }}> No items found </Text>;
     }
 
     const goLeft = () => {
@@ -51,7 +51,7 @@ export default function CreateCarousel({ items, onSelect, selectedId }: CreateCa
             <Image
                 source={{ uri: current.imageUrl }}
                 style={[styles.image, isSelected && styles.selectedImage]}
-                resizeMode="cover"
+                resizeMode='cover'
             />
 
             <TouchableOpacity onPress={goRight} style={styles.arrow}>

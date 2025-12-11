@@ -122,7 +122,7 @@ function PreviewView({ imageUri}: {imageUri: string}) {
                         onPress={saveGarment} 
                         style={[styles.primaryBtn, !category && styles.primaryBtnDisabled]} 
                         disabled={!category} > 
-                        {loading && <Text style={{ color: "white" }}> Loading...</Text>}
+                        {loading && <Text style={{ color: 'white' }}> Loading...</Text>}
                         <Text style={styles.btnText}> Save </Text> 
                     </TouchableOpacity> 
                 </View> 

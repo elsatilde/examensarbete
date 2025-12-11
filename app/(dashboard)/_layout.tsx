@@ -45,7 +45,7 @@ export default function DashboardLayout() {
             {isHome && (
                 <TouchableOpacity onPress={onLogout}>
                     <Ionicons 
-                        name={"log-out-outline"} 
+                        name={'log-out-outline'} 
                         size={30} 
                         color={colors.accent}
                     />  
@@ -58,7 +58,7 @@ export default function DashboardLayout() {
                     style={{ flexDirection: 'row', alignItems: 'center'}}
                 >
                     <Ionicons 
-                        name={"add-outline"} 
+                        name={'add-outline'} 
                         size={25} 
                         color={colors.text} 
                     /> 
@@ -134,14 +134,14 @@ const styles = StyleSheet.create({
       paddingTop: 25,
       marginTop: 45,
       marginLeft: 10,
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-between",
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
       backgroundColor: colors.background ,
     },
     logo: {
       fontSize: 40,
-      fontFamily: "StilistaFont",
+      fontFamily: 'StilistaFont',
       color: colors.accent
     },
     text: {
