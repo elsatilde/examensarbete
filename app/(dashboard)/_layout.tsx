@@ -145,8 +145,8 @@ const styles = StyleSheet.create({
       color: colors.accent
     },
     text: {
-        fontSize: 15,
-        fontWeight: 'bold',
+        fontFamily: 'StilistaFont',
+        fontSize: 18,
         color: colors.text
     }
   });

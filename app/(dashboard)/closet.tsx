@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import ThemedView from '../../components/ThemedView'
 import { useGarments } from '../../hooks/useGarments'
@@ -85,11 +85,14 @@ const Closet = () => {
 
                   <Image
                     source={{ uri: selectedGarment.imageUrl }}
-                    style={{ width: '100%', height: 300, borderRadius: 12 }}
+                    style={{ width: '100%', height: 300 }}
                     resizeMode='cover'
                   />
 
-                  <Text style={{ backgroundColor: colors.iconColor, borderRadius: 20, color: 'white', paddingVertical: 5, paddingHorizontal: 15 }}>
+                  <Text style={{ 
+                      backgroundColor: colors.iconColor, color: 'white', fontWeight: '500',
+                      borderRadius: 20, paddingVertical: 5, paddingHorizontal: 15, 
+                      alignSelf: 'flex-start', }}>
                     {selectedGarment.category.toUpperCase()}
                   </Text> 
 

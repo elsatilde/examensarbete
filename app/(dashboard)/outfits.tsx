@@ -93,7 +93,7 @@ export default function Outfits() {
             <View style={{ gap: 20 }}>
                 <TouchableOpacity 
                   onPress={() => setModalVisible(false)}
-                  style={{ position: 'relative', top: 0, right: 0, padding: 2, zIndex: 10 }}>
+                  style={{ position: 'relative', top: 0, right: 0, zIndex: 10 }}>
                   <Ionicons name={'close'} color={colors.text} size={32} />
                 </TouchableOpacity>
 

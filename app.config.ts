@@ -5,6 +5,7 @@ const config: ExpoConfig = {
   name: "examensarbete",
   slug: "examensarbete",
   scheme: "examensarbete",
+  plugins: ["expo-router"],
 
   extra: {
     FIREBASE_API_KEY: process.env.FIREBASE_API_KEY,

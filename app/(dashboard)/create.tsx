@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 import ThemedView from '../../components/ThemedView'
 import { useGarments } from '../../hooks/useGarments'
@@ -39,7 +39,7 @@ const Create = () => {
     setSelectedBottom(null);
     setSelectedShoes(null);
 
-    alert("Outfit saved!")// Behöver snyggas till
+    alert("Outfit saved!") 
   };
 
   return (
