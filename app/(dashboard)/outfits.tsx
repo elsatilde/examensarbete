@@ -13,6 +13,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function Outfits() {
   const { user } = useUser();
+  const [loading, setLoading] = useState(true);
   const { getOutfits } = useOutfits();
   const [outfits, setOutfits] = useState<Outfit[]>([]);
   const [selectedOutfit, setSelectedOutfit] = useState<Outfit | null>(null);
@@ -20,7 +21,6 @@ export default function Outfits() {
   const [popupItems, setPopupItems] = useState<OutfitItems>({});
 
   useEffect(() => {
-
     const load = async () => {
       if (!user) return;
       const data = await getOutfits();
@@ -110,11 +110,13 @@ export default function Outfits() {
                   ))}
                 </ScrollView>
 
+                <View style={{ alignItems: 'flex-end'}}>
                 <TouchableOpacity
                   onPress={() => handleDeleteOutfit(selectedOutfit.id)}
-                  style={{ backgroundColor: colors.accent, padding: 12, borderRadius: 10}}>
-                    <Text style={{ color:'white', textAlign: 'center' }}> Delete Outfit </Text>
+                  style={{ backgroundColor: colors.error, padding: 8, borderRadius: 15, borderColor: 'red', borderWidth: 1, width: 150 }}>
+                    <Text style={{ color:'white', textAlign: 'center', fontWeight: 'bold' }}> Delete Outfit </Text>
                 </TouchableOpacity>
+                </View>
             </View>
           )}
         </PopUpModal>

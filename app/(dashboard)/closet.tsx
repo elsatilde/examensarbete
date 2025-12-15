@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import ThemedView from '../../components/ThemedView'
 import { useGarments } from '../../hooks/useGarments'
 import { useFocusEffect } from 'expo-router'
@@ -15,9 +15,16 @@ const Closet = () => {
   const { garments, getGarments } = useGarments();
   const [selectedGarment, setSelectedGarment] = useState<null | typeof garments[0]>(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useFocusEffect(
-    useCallback(() => { getGarments(); }, [])
+    useCallback(() => { 
+      getGarments(); 
+      const timer = setTimeout(() => {
+        setLoading(false);
+      }, 2000);
+      return () => clearTimeout(timer)
+    }, [])
   );
 
   const handleDeleteGarment = (garmentId: string) => {
@@ -52,6 +59,15 @@ const Closet = () => {
   const tops = garments.filter(g => g.category === "top");
   const bottoms = garments.filter(g => g.category === "bottom");
   const shoes = garments.filter(g => g.category === "shoes");
+
+  if(loading){
+    return (
+      <ThemedView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size='large' color={colors.accent} />
+        <Text style={{ color: colors.text, fontSize: 12, fontWeight: 'bold', marginTop: 10 }}> Loading garments...</Text>
+      </ThemedView>
+    )
+  }
 
   return (
     <ThemedView style={styles.container} safe={true}>
@@ -89,18 +105,22 @@ const Closet = () => {
                     resizeMode='cover'
                   />
 
-                  <Text style={{ 
-                      backgroundColor: colors.iconColor, color: 'white', fontWeight: '500',
-                      borderRadius: 20, paddingVertical: 5, paddingHorizontal: 15, 
-                      alignSelf: 'flex-start', }}>
-                    {selectedGarment.category.toUpperCase()}
-                  </Text> 
+                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 75}}>
+                    <Text style={{ 
+                        backgroundColor: colors.iconColor, color: 'white', fontWeight: '500',
+                        borderRadius: 20, paddingVertical: 5, paddingHorizontal: 15, 
+                        alignSelf: 'flex-start', }}>
+                      {selectedGarment.category.toUpperCase()}
+                    </Text> 
 
-                  <TouchableOpacity
-                    onPress={() => handleDeleteGarment(selectedGarment.id)}
-                    style={{ backgroundColor: colors.accent, padding: 12, borderRadius: 10 }}>
-                      <Text style={{ color: 'white', textAlign: 'center' }}> Delete Garment </Text>
-                  </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleDeleteGarment(selectedGarment.id)}
+                      style={{ 
+                        backgroundColor: colors.error, paddingVertical: 4, paddingHorizontal: 15, width: 150,
+                        borderRadius: 15, borderColor: 'red', borderWidth: 1}}>
+                        <Text style={{ color: 'white', textAlign: 'center', fontWeight: '500' }}> Delete Garment </Text>
+                    </TouchableOpacity>
+                  </View>
 
               </View>
             )}
