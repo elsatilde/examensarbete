@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDocs, limit, orderBy, query, serverTimestamp } from "firebase/firestore";
 import { AppUser } from "../types/User.types";
 import { db } from "./firebase";
 import { Outfit } from "../types/Outfit.types";
@@ -32,4 +32,20 @@ export async function deleteOutfit(user: AppUser, outfitId: string) {
     if (!user) throw new Error("User not logged in");
   
     await deleteDoc(doc(db, "users", user.uid, "outfits", outfitId));
+}
+
+export async function getLatestOutfits(user: AppUser, amount = 3): Promise<Outfit[]> {
+    if (!user) throw new Error("User not logged in");
+
+    const q = query(
+        collection(db, "users", user.uid, "outfits"),
+        orderBy("createdAt", "desc"),
+        limit(amount)
+    )
+    const snapshot = await getDocs(q);
+
+    return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...(doc.data() as Omit<Outfit, "id">),
+    }));
 }

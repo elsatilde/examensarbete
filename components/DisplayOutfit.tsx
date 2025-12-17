@@ -12,7 +12,8 @@ export type OutfitItems = {
     shoes?: Garment | null;
 };
 
-export default function DispalyOutfit({ outfit, user }: {outfit: Outfit; user: AppUser | null}) {
+export default function DispalyOutfit({ outfit, user, variant = "default", style }
+    : {outfit: Outfit; user: AppUser | null; variant?: "default" | "compact"; style?: any}) {
     const [items, setItems] = useState<OutfitItems>({});
 
     useEffect(() => {
@@ -33,29 +34,42 @@ export default function DispalyOutfit({ outfit, user }: {outfit: Outfit; user: A
     if (!items.top || !items.bottom || !items.shoes) return null;
 
     return (
-        <View style={{ borderColor: colors.accent, borderWidth: 2, height: 300, width: 300 }}>
+        <View style={{ 
+            borderColor: colors.accent, 
+            borderWidth: 2, 
+            height: variant === "compact" ? 180 : 300, 
+            width: variant === "compact" ? 180 : 300 }}>
 
             <Image
                 source={{ uri: items.top.imageUrl }}
                 style={{
-                    width: 115, height: 115,
-                    marginLeft: 15, marginTop: 30, marginRight: 25, marginBottom: -30,
+                    width: variant === "compact" ? 70 : 115, 
+                    height: variant === "compact" ? 70 : 115,
+                    marginLeft: 15,
+                    marginTop: variant === "compact" ? 10 : 30, 
+                    marginRight: 25, 
+                    marginBottom: variant === "compact" ? -5 : -30,
                 }}
             />
 
             <Image
                 source={{ uri: items.bottom.imageUrl }}
                 style={{
-                    width: 115, height: 115,
-                    marginLeft: 170, marginTop: -20, marginBottom: -70,
+                    width: variant === "compact" ? 70 : 115, 
+                    height: variant === "compact" ? 70 : 115,
+                    marginLeft: variant === "compact" ? 100 : 170, 
+                    marginTop: -20, 
+                    marginBottom: -70,
                 }}
             />
 
             <Image
                 source={{ uri: items.shoes.imageUrl }}
                 style={{
-                    width: 115, height: 115,
-                    marginLeft: 40, marginTop: 20,
+                    width: variant === "compact" ? 70 : 115, 
+                    height: variant === "compact" ? 70 : 115,
+                    marginLeft: variant === "compact" ? 20 : 40, 
+                    marginTop: variant === "compact" ? 35 : 20,
                 }}
             />
 

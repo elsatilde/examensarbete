@@ -127,7 +127,7 @@ const Outfits = () => {
 
                 <Text style={{ fontSize: 18, fontWeight: 'bold' }}> Garments: </Text>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  {[popupItems.top, popupItems.bottom, popupItems.shoes].map((g, i) => ( // Kanske att man ska komma till garment card när man trycker på ett plagg
+                  {[popupItems.top, popupItems.bottom, popupItems.shoes].map((g, i) => ( 
                     <Image 
                       key={i}
                       source={{ uri: g?.imageUrl}}

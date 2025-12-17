@@ -3,14 +3,15 @@ import { Garment } from "../types/Garment.types";
 
 interface CategoryListProps {
     item: Garment;
-    onPress: (garment: Garment) => void;
+    onPress?: (garment: Garment) => void;
 }
 
 export default function CategoryList({ item, onPress }: CategoryListProps) {
     return (
         <TouchableOpacity 
+            disabled={!onPress}
             style={styles.box} 
-            onPress={() => onPress(item)}>  
+            onPress={() => onPress?.(item)}>  
              <Image 
                 source={{ uri: item.imageUrl }} 
                 style={styles.img}

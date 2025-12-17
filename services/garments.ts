@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, limit, orderBy, query, serverTimestamp } from "firebase/firestore";
 import { Garment, GarmentCategory } from "../types/Garment.types";
 import { AppUser } from "../types/User.types";
 import { db } from "./firebase";
@@ -33,7 +33,7 @@ export async function deleteGarment(user: AppUser, garmentId: string) {
     await deleteDoc(doc(db, "users", user.uid, "garments", garmentId));
 };
 
-export const getGarmentById = async (user: AppUser, garmentId: string,): Promise<Garment | null> => {
+export async function getGarmentById(user: AppUser, garmentId: string,): Promise<Garment | null> {
     if (!user) throw new Error("User not logged in");
 
     const docRef = doc(db, "users", user.uid, "garments", garmentId);
@@ -43,4 +43,20 @@ export const getGarmentById = async (user: AppUser, garmentId: string,): Promise
         ? {id: snap.id, ...(snap.data() as Omit<Garment, "id"> )}
         : null;
 };
+
+export async function getLatestGarments(user: AppUser, amount= 5,): Promise<Garment[]> {
+    if (!user) throw new Error("User not logged in");
+
+    const q = query(
+        collection(db, "users", user.uid, "garments"),
+        orderBy("createdAt", "desc"),
+        limit(amount)
+    )
+    const snapshot = await getDocs(q);
+
+    return snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...(doc.data() as Omit<Garment, "id">),
+    }));    
+}
   
