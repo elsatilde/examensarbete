@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native'
 import ThemedView from '../../components/ThemedView'
 import DispalyOutfit, { OutfitItems } from '../../components/DisplayOutfit'
@@ -10,10 +10,12 @@ import { getGarmentById } from '../../services/garments';
 import { colors } from '../../variables/colors';
 import { deleteOutfit } from '../../services/outfits';
 import { Ionicons } from '@expo/vector-icons';
+import ShimmerOutfitList from '../../components/ShimmerOutfitList';
 
-export default function Outfits() {
+const Outfits = () => {
   const { user } = useUser();
-  const [loading, setLoading] = useState(true);
+  const hasShownLoader = useRef(false);
+  const [loading, setLoading] = useState(false);
   const { getOutfits } = useOutfits();
   const [outfits, setOutfits] = useState<Outfit[]>([]);
   const [selectedOutfit, setSelectedOutfit] = useState<Outfit | null>(null);
@@ -21,14 +23,31 @@ export default function Outfits() {
   const [popupItems, setPopupItems] = useState<OutfitItems>({});
 
   useEffect(() => {
-    const load = async () => {
-      if (!user) return;
-      const data = await getOutfits();
-      setOutfits(data);
-    }; 
+    if (!user) return;
 
-    load();
+    if(!hasShownLoader.current) {
+      setLoading(true);
 
+      const load = async () => {
+        const data = await getOutfits();
+        setOutfits(data);
+      }; 
+
+      load();
+
+      const timer = setTimeout(() => {
+        setLoading(false);
+        hasShownLoader.current = true;
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    } else {
+      const load = async () => {
+        const data = await getOutfits();
+        setOutfits(data);
+      }; 
+      load();
+    }
   }, [user]);
 
   useEffect(() => {
@@ -61,7 +80,7 @@ export default function Outfits() {
               setModalVisible(false);
             } catch (err) {
               console.error(err);
-              alert("Failed to delete outfit ");
+              Alert.alert("", "Failed to delete outfit ");
             };
           }
         }
@@ -72,21 +91,28 @@ export default function Outfits() {
   return (
     <ThemedView style={styles.container} safe={true}>
         <Text style={styles.title}> Saved Outfits </Text>
-
-        <ScrollView style={{ margin: 10 }}>    
-              {outfits.map((outfit) => (
-                <TouchableOpacity
-                    key={outfit.id}
-                    style={{ marginBottom: 20 }} 
-                    onPress={() => {
-                      setSelectedOutfit(outfit);
-                      setModalVisible(true);
-                    }} 
-                    >
-                        <DispalyOutfit outfit={outfit} user={user} />
-                </TouchableOpacity>
-              ))}
-        </ScrollView>
+        {loading ? (
+          <>
+            <ShimmerOutfitList/>
+          </>
+        ): (
+          <>
+            <ScrollView style={{ margin: 10 }}>    
+                  {outfits.map((outfit) => (
+                    <TouchableOpacity
+                        key={outfit.id}
+                        style={{ marginBottom: 20 }} 
+                        onPress={() => {
+                          setSelectedOutfit(outfit);
+                          setModalVisible(true);
+                        }} 
+                        >
+                            <DispalyOutfit outfit={outfit} user={user} />
+                    </TouchableOpacity>
+                  ))}
+            </ScrollView>
+        </>
+      )}
 
         <PopUpModal visible={modalVisible} onClose={() => setModalVisible(false)}>
           {selectedOutfit && popupItems.top && popupItems.bottom && popupItems.shoes && (
@@ -123,6 +149,8 @@ export default function Outfits() {
     </ThemedView>
   )
 }
+
+export default Outfits
 
 
 const styles = StyleSheet.create({

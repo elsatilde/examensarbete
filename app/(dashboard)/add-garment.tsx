@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import ThemedView from "../../components/ThemedView";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
@@ -65,7 +65,7 @@ function PreviewView({ imageUri}: {imageUri: string}) {
 
     const saveGarment = async () => {
         if (!category) { 
-            alert("Select a category"); 
+            Alert.alert("Select a category"); 
             return;
         }
         try {
@@ -85,11 +85,20 @@ function PreviewView({ imageUri}: {imageUri: string}) {
     
         } catch (err) {
             console.error(err);
-            alert("Error saving garment");
+            Alert.alert("", "Error saving garment");
         } finally {
             setLoading(false);
         }
     };
+
+    if (loading) {
+        return (
+            <ThemedView style={{ flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                <ActivityIndicator size="large" color={colors.accent} />
+                <Text style={{ color: colors.text, fontSize: 12, fontWeight: 'bold', marginTop: 10}}> Adding garment...</Text>
+            </ThemedView>
+        )
+    }
 
     return (
         <View style={styles.box}> 
@@ -122,7 +131,6 @@ function PreviewView({ imageUri}: {imageUri: string}) {
                         onPress={saveGarment} 
                         style={[styles.primaryBtn, !category && styles.primaryBtnDisabled]} 
                         disabled={!category} > 
-                        {loading && <Text style={{ color: 'white' }}> Loading...</Text>}
                         <Text style={styles.btnText}> Save </Text> 
                     </TouchableOpacity> 
                 </View> 

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { Alert, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import ThemedView from '../../components/ThemedView'
 import { useGarments } from '../../hooks/useGarments'
 import GarmentCarousel from '../../components/CreateCarousel'
@@ -7,7 +7,6 @@ import { Garment } from '../../types/Garment.types'
 import { useOutfits } from '../../hooks/useOutfits'
 import { colors } from '../../variables/colors'
 import { useFocusEffect } from 'expo-router'
-
 
 const Create = () => {
   const { garments, getGarments } = useGarments();
@@ -29,7 +28,7 @@ const Create = () => {
 
   const saveOutfit = async () => {
     if(!selectedTop || !selectedBottom || !selectedShoes){
-      alert("Please choose three garments");
+      Alert.alert("", "Please choose three garments");
       return;
     }
 
@@ -39,7 +38,7 @@ const Create = () => {
     setSelectedBottom(null);
     setSelectedShoes(null);
 
-    alert("Outfit saved!") 
+    Alert.alert("", "Your Outfit has been saved ✨") 
   };
 
   return (

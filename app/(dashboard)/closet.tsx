@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react'
-import { ActivityIndicator, Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useCallback, useRef, useState } from 'react'
+import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import ThemedView from '../../components/ThemedView'
 import { useGarments } from '../../hooks/useGarments'
 import { useFocusEffect } from 'expo-router'
@@ -9,21 +9,30 @@ import { deleteGarment } from '../../services/garments'
 import { useUser } from '../../hooks/useUser'
 import PopUpModal from '../../components/PopUpModal'
 import { Ionicons } from '@expo/vector-icons'
+import ShimmerClosetList from '../../components/ShimmerClosetList'
 
 const Closet = () => {
   const { user } = useUser();
   const { garments, getGarments } = useGarments();
   const [selectedGarment, setSelectedGarment] = useState<null | typeof garments[0]>(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const hasShownLoader = useRef(false);
+  const [loading, setLoading] = useState(false);
 
   useFocusEffect(
     useCallback(() => { 
       getGarments(); 
-      const timer = setTimeout(() => {
-        setLoading(false);
-      }, 2000);
-      return () => clearTimeout(timer)
+
+      if(!hasShownLoader.current) {
+        setLoading(true);
+
+        const timer = setTimeout(() => {
+          setLoading(false);
+          hasShownLoader.current = true;
+        }, 2000);
+
+        return () => clearTimeout(timer)
+      }
     }, [])
   );
 
@@ -43,7 +52,7 @@ const Closet = () => {
               getGarments();
             } catch (err) {
               console.error(err);
-              alert("Failed to delete garment");
+              Alert.alert("", "Failed to delete garment");
             };
           }
         }
@@ -60,18 +69,20 @@ const Closet = () => {
   const bottoms = garments.filter(g => g.category === "bottom");
   const shoes = garments.filter(g => g.category === "shoes");
 
-  if(loading){
-    return (
-      <ThemedView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size='large' color={colors.accent} />
-        <Text style={{ color: colors.text, fontSize: 12, fontWeight: 'bold', marginTop: 10 }}> Loading garments...</Text>
-      </ThemedView>
-    )
-  }
-
   return (
     <ThemedView style={styles.container} safe={true}>
-        <Text style={styles.title}> Tops </Text>
+      {loading ? (
+        <>
+          <Text style={styles.title}> Tops </Text>
+          <ShimmerClosetList />
+          <Text style={styles.title}> Bottoms </Text>
+          <ShimmerClosetList />
+          <Text style={styles.title}> Shoes </Text>
+          <ShimmerClosetList />
+        </>
+      ) : (
+        <>
+          <Text style={styles.title}> Tops </Text>
           <ScrollView horizontal>
             {tops.map(item => (
                 <CategoryList key={item.id} item={item} onPress={handlePressGarment} />
@@ -88,7 +99,9 @@ const Closet = () => {
             {shoes.map(item => (
                 <CategoryList key={item.id} item={item} onPress={handlePressGarment} />
             ))}
-          </ScrollView>
+          </ScrollView>  
+        </>
+      )}
 
           <PopUpModal visible={modalVisible} onClose={() => setModalVisible(false)} >
             {selectedGarment && (
