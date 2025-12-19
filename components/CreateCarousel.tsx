@@ -7,7 +7,7 @@ import { Garment } from "../types/Garment.types";
 type CreateCarouselProps = {
    items: Garment[];
    onSelect: (id: string) => void;
-   selectedId: string | null;
+   selectedId?: string | null;
 }
 
 export default function CreateCarousel({ items, onSelect, selectedId }: CreateCarouselProps) {
@@ -28,7 +28,7 @@ export default function CreateCarousel({ items, onSelect, selectedId }: CreateCa
     }, [index, items])
 
     if(!items || items.length === 0) {
-        return <Text style={{ textAlign: 'center' }}> No items found </Text>;
+        return <Text style={{ textAlign: 'center', fontWeight: '500', fontStyle: 'italic' }}> No items found </Text>;
     }
 
     const goLeft = () => {
