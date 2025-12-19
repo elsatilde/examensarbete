@@ -42,7 +42,10 @@ export default function CameraScreen() {
         setCameraActive(false);
         router.push({
             pathname: "/(dashboard)/add-garment",
-            params: { imageUri: photo.uri }
+            params: { 
+                from: "camera",
+                imageUri: photo.uri 
+            }
         });
     };
 

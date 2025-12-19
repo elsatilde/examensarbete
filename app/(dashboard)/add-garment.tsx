@@ -59,6 +59,7 @@ function InitialView() {
 
 function PreviewView({ imageUri}: {imageUri: string}) {
     const router = useRouter();
+    const { from } = useLocalSearchParams<{ from?: string }>();
     const { addGarments } = useGarments();
     const [loading, setLoading] = useState(false);
     const [category, setCategory] = useState<GarmentCategory | null>(null);
@@ -122,9 +123,17 @@ function PreviewView({ imageUri}: {imageUri: string}) {
 
                 <View style={{ flexDirection: 'row', gap: 15}}> 
                     <TouchableOpacity 
-                        onPress={() => router.push("/(dashboard)/camera")} 
+                        onPress={() => {
+                            if (from === "library") {
+                                router.replace("/(dashboard)/library");
+                            } else {
+                                router.replace("/(dashboard)/camera");
+                            }
+                        }} 
                         style={styles.secondaryBtn}> 
-                    <Text style={styles.btnText}> Retake </Text> 
+                    <Text style={styles.btnText}> 
+                        {from === "library" ? "Rechoose" : "Retake"}
+                    </Text> 
                     </TouchableOpacity> 
 
                     <TouchableOpacity 
@@ -191,7 +200,8 @@ const styles = StyleSheet.create({
       },
       btnText: {
         color: 'white',
-        fontSize: 12
+        fontSize: 12,
+        fontWeight: '500'
       },
       secondaryBtn: {
         backgroundColor: colors.iconColor,

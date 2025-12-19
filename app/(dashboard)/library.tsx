@@ -41,7 +41,10 @@ export default function Library() {
         if(!imageUri) return;
         router.push({
             pathname: "/(dashboard)/add-garment",
-            params: { imageUri }
+            params: { 
+                from: "library",
+                imageUri 
+            }
         });
     };
 
