@@ -82,24 +82,42 @@ const Closet = () => {
         </>
       ) : (
         <>
-          <Text style={styles.title}> Tops </Text>
-          <ScrollView horizontal>
-            {tops.map(item => (
-                <CategoryList key={item.id} item={item} onPress={handlePressGarment} />
-            ))}
-          </ScrollView>
+        <Text style={styles.title}> Tops </Text>
+          {tops.length === 0 ? (
+            <View style={styles.emptyBox}>
+              <Text style={styles.emptyCloset}> No tops in your closet </Text>
+            </View>
+          ) : (
+            <ScrollView horizontal>
+              {tops.map(item => (
+                  <CategoryList key={item.id} item={item} onPress={handlePressGarment} />
+              ))}
+            </ScrollView>
+          )}
         <Text style={styles.title}> Bottoms </Text>
-          <ScrollView horizontal>
-            {bottoms.map(item => (
-                <CategoryList key={item.id} item={item} onPress={handlePressGarment} />
-            ))}
-          </ScrollView>
+          {bottoms.length === 0 ? (
+            <View style={styles.emptyBox}>
+              <Text style={styles.emptyCloset}> No bottoms in your closet </Text>
+            </View>
+          ) : (
+            <ScrollView horizontal>
+              {bottoms.map(item => (
+                  <CategoryList key={item.id} item={item} onPress={handlePressGarment} />
+              ))}
+            </ScrollView>
+          )}
         <Text style={styles.title}> Shoes </Text>
-          <ScrollView horizontal>
-            {shoes.map(item => (
-                <CategoryList key={item.id} item={item} onPress={handlePressGarment} />
-            ))}
-          </ScrollView>  
+          {shoes.length === 0 ? (
+            <View style={styles.emptyBox}> 
+              <Text style={styles.emptyCloset}> No shoes in your closet </Text>
+            </View>
+          ) : (
+            <ScrollView horizontal>
+              {shoes.map(item => (
+                  <CategoryList key={item.id} item={item} onPress={handlePressGarment} />
+              ))}
+            </ScrollView> 
+          )} 
         </>
       )}
 
@@ -147,17 +165,28 @@ export default Closet
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        paddingLeft: 30,
-        paddingRight: 30,
-        marginTop: -25,
+      flex: 1,
+      paddingLeft: 30,
+      paddingRight: 30,
+      marginTop: -25,
        
     },
     title: {
-        fontSize: 20,
-        marginBottom: 15,
-        fontFamily: 'StilistaFont',
-        textDecorationLine: 'underline',
-        color: colors.iconColor,
-    }
+      fontSize: 20,
+      marginBottom: 15,
+      fontFamily: 'StilistaFont',
+      textDecorationLine: 'underline',
+      color: colors.iconColor,
+    },
+    emptyBox: {
+      height: 140
+    },
+    emptyCloset: {
+      marginLeft: 20,
+      marginBottom: 10,
+      color: colors.iconColor,
+      fontSize: 15,
+      fontStyle: 'italic',
+      fontWeight: '500'
+    },
 })

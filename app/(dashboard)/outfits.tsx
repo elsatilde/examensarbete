@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View, Alert } from 'react-native'
 import ThemedView from '../../components/ThemedView'
 import DispalyOutfit, { OutfitItems } from '../../components/DisplayOutfit'
@@ -11,6 +11,7 @@ import { colors } from '../../variables/colors';
 import { deleteOutfit } from '../../services/outfits';
 import { Ionicons } from '@expo/vector-icons';
 import ShimmerOutfitList from '../../components/ShimmerOutfitList';
+import { useFocusEffect } from 'expo-router';
 
 const Outfits = () => {
   const { user } = useUser();
@@ -22,33 +23,31 @@ const Outfits = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [popupItems, setPopupItems] = useState<OutfitItems>({});
 
-  useEffect(() => {
-    if (!user) return;
-
-    if(!hasShownLoader.current) {
-      setLoading(true);
+  useFocusEffect(
+      useCallback(() => {
+      if (!user) return;
 
       const load = async () => {
+        if (!hasShownLoader.current) {
+          setLoading(true);
+        }
+        
         const data = await getOutfits();
         setOutfits(data);
+
+        if (!hasShownLoader.current) {
+          setTimeout(() => {
+            setLoading(false);
+            hasShownLoader.current = true;
+          }, 2000)
+        }
       }; 
 
       load();
 
-      const timer = setTimeout(() => {
-        setLoading(false);
-        hasShownLoader.current = true;
-      }, 2000);
+    }, [user])
+  );
 
-      return () => clearTimeout(timer);
-    } else {
-      const load = async () => {
-        const data = await getOutfits();
-        setOutfits(data);
-      }; 
-      load();
-    }
-  }, [user]);
 
   useEffect(() => {
     if (!modalVisible || !selectedOutfit || !user) return;
@@ -91,12 +90,15 @@ const Outfits = () => {
   return (
     <ThemedView style={styles.container} safe={true}>
         <Text style={styles.title}> Saved Outfits </Text>
+
         {loading ? (
-          <>
-            <ShimmerOutfitList/>
-          </>
-        ): (
-          <>
+          <ShimmerOutfitList/>
+          ) : outfits.length === 0 ? (
+            <>
+            <Text style={styles.emptyTitle}> No saved outfits yet </Text>
+            <Text style={styles.emptyText}> Add garments and strart creating outfits in Create </Text>
+            </>
+          ) : (
             <ScrollView style={{ margin: 10 }}>    
                   {outfits.map((outfit) => (
                     <TouchableOpacity
@@ -111,8 +113,7 @@ const Outfits = () => {
                     </TouchableOpacity>
                   ))}
             </ScrollView>
-        </>
-      )}
+          )}
 
         <PopUpModal visible={modalVisible} onClose={() => setModalVisible(false)}>
           {selectedOutfit && popupItems.top && popupItems.bottom && popupItems.shoes && (
@@ -155,16 +156,32 @@ export default Outfits
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        paddingLeft: 30,
-        paddingRight: 30,
-        alignItems: 'center',
+      flex: 1,
+      paddingLeft: 30,
+      paddingRight: 30,
+      alignItems: 'center',
     },
     title: {
-        fontWeight: 'bold',
-        fontSize: 30,
-        marginTop: -30,
-        marginBottom: 20,
-        fontFamily: 'StilistaFont'
+      fontWeight: 'bold',
+      fontSize: 30,
+      marginTop: -30,
+      marginBottom: 20,
+      fontFamily: 'StilistaFont'
+    },
+    emptyTitle: {
+      fontSize: 18,
+      fontWeight: '700',
+      fontStyle: 'italic',
+      color: colors.iconColor,
+      marginBottom: 20,
+      marginTop: 20,
+      alignSelf: 'flex-start'
+
+    },
+    emptyText: {
+      fontSize: 15,
+      fontStyle: 'italic',
+      fontWeight: '500',
+      color: colors.iconColor
     }
 })

@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import ThemedView from '../../components/ThemedView'
 import { colors } from '../../variables/colors'
 import { Garment } from '../../types/Garment.types'
@@ -11,6 +11,7 @@ import CategoryList from '../../components/CategoryList'
 import DispalyOutfit from '../../components/DisplayOutfit'
 import ShimmerClosetList from '../../components/ShimmerClosetList'
 import ShimmerOutfitList from '../../components/ShimmerOutfitList'
+import { useFocusEffect } from 'expo-router'
 
 const Home = () => {
   const { user } = useUser();
@@ -18,23 +19,25 @@ const Home = () => {
   const [latestGarments, setLatestGarments] = useState<Garment[]>([]);
   const [latestOutfits, setLatestOutfits] = useState<Outfit[]>([]);
 
-  useEffect(() => {
-    if (!user) return;
-    
-    setLoading(true);
+  useFocusEffect(
+    useCallback(() => {
+      if (!user) return;
+      
+      setLoading(true);
 
-    const load = async () => {
-      const [garments, outfits] = await Promise.all([
-        getLatestGarments(user, 5),
-        getLatestOutfits(user, 3),
-      ]);
+      const load = async () => {
+        const [garments, outfits] = await Promise.all([
+          getLatestGarments(user, 5),
+          getLatestOutfits(user, 3),
+        ]);
 
-      setLatestGarments(garments);
-      setLatestOutfits(outfits);
-      setLoading(false);
-    };
-    load();
-  }, [user]);
+        setLatestGarments(garments);
+        setLatestOutfits(outfits);
+        setLoading(false);
+      };
+      load();
+    }, [user])
+  )
 
   return (
     <ThemedView style={styles.container} safe={true}>
@@ -42,6 +45,11 @@ const Home = () => {
       <Text style={styles.title}> Welcome to your digital wardrobe ✨ </Text>
 
       <Text style={styles.text}> New in your Closet </Text>
+      {!loading && latestGarments.length === 0 && (
+        <Text style={styles.NOtext}> 
+        No Garments yet {'\n'} 
+        Start adding in your Closet ✨</Text>
+      )}
       {loading ? (
         <>
           <ShimmerClosetList />
@@ -58,11 +66,14 @@ const Home = () => {
           </ScrollView>
         </>
       )}
-      {!loading && latestGarments.length === 0 && (
-        <Text style={styles.NOtext}> No Garments yet, start adding in your Closet ✨</Text>
-      )}
+     
 
       <Text style={styles.text}> Recently created Outfits </Text>
+      {!loading && latestOutfits.length === 0 && (
+        <Text style={styles.NOtext}> 
+        No Outfits yet {'\n'}
+        Start creating in Create ✨ </Text>
+      )}
       {loading ? (
         <>
           <ShimmerOutfitList />
@@ -81,9 +92,6 @@ const Home = () => {
             ))}
           </ScrollView> 
         </>
-      )}
-      {!loading && latestOutfits.length === 0 && (
-        <Text style={styles.NOtext}> No Outfits yet, start creating in Create ✨</Text>
       )}
     </ThemedView>
   )
@@ -117,8 +125,12 @@ const styles = StyleSheet.create({
     NOtext: {
       fontWeight: '700',
       color: colors.iconColor,
-      fontSize: 18,
+      fontSize: 15,
       marginBottom: 10,
       marginTop: 10,
+      paddingLeft: 20,
+      borderColor: colors.error,
+      paddingVertical: 10,
+      paddingHorizontal: 30
     },   
 })
