@@ -33,6 +33,29 @@ export async function deleteGarment(user: AppUser, garmentId: string) {
     await deleteDoc(doc(db, "users", user.uid, "garments", garmentId));
 };
 
+export async function deleteGarmentAndRelatedOutfits(user: AppUser, garmentId: string) {
+    if (!user) throw new Error("User not logged in");
+    
+    await deleteGarment(user, garmentId);
+
+    const outfitsSnap = await getDocs(
+        collection(db, "users", user.uid, "outfits")
+    );
+
+    const deletions = outfitsSnap.docs
+        .filter(doc => {
+            const data = doc.data();
+            return (
+                data.topId === garmentId ||
+                data.bottomId === garmentId ||
+                data.shoesId === garmentId
+            );
+        })
+        .map(doc => deleteDoc(doc.ref));
+
+    await Promise.all(deletions);
+};
+
 export async function getGarmentById(user: AppUser, garmentId: string,): Promise<Garment | null> {
     if (!user) throw new Error("User not logged in");
 

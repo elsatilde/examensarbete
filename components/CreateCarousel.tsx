@@ -40,6 +40,9 @@ export default function CreateCarousel({ items, onSelect, selectedId }: CreateCa
     };
 
     const current = items[index];
+    if (!current) {
+        return null;
+    }
     const isSelected = current.id === selectedId;
 
     return (

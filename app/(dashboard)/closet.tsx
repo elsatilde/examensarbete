@@ -5,7 +5,7 @@ import { useGarments } from '../../hooks/useGarments'
 import { useFocusEffect } from 'expo-router'
 import CategoryList from '../../components/CategoryList'
 import { colors } from '../../variables/colors'
-import { deleteGarment } from '../../services/garments'
+import { deleteGarmentAndRelatedOutfits } from '../../services/garments'
 import { useUser } from '../../hooks/useUser'
 import PopUpModal from '../../components/PopUpModal'
 import { Ionicons } from '@expo/vector-icons'
@@ -46,7 +46,7 @@ const Closet = () => {
           onPress: async () => {
             if (!user) return;
             try {
-              await deleteGarment(user, garmentId);
+              await deleteGarmentAndRelatedOutfits(user, garmentId);
               setModalVisible(false);
               setSelectedGarment(null);
               getGarments();
