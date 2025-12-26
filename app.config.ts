@@ -4,6 +4,7 @@ import "dotenv/config";
 const config: ExpoConfig = {
   name: "examensarbete",
   slug: "examensarbete",
+  orientation: "portrait",
   scheme: "examensarbete",
   plugins: ["expo-router"],
 
